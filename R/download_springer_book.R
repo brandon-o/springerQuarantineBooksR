@@ -12,6 +12,7 @@ download_springer_book <- function(book_spec_title, springer_table){
   edition <- aux$edition
   en_book_type <- aux$english_package_name
 
+  # DOWNLOAD PDF FILES
   download_url <- aux$open_url %>%
     GET() %>%
     extract2('url') %>%
@@ -27,7 +28,8 @@ download_springer_book <- function(book_spec_title, springer_table){
   writeBin(pdf_file$content, write.filename)
   close(write.filename)
 
-    download_url <- aux$open_url %>%
+  # DOWNLOAD EPUB FILES
+  download_url <- aux$open_url %>%
     GET() %>%
     extract2('url') %>%
     str_replace('book', paste0('content', file_sep, 'epub')) %>%
