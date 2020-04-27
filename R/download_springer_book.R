@@ -23,8 +23,22 @@ download_springer_book <- function(book_spec_title, springer_table){
 
   clean_book_title <- str_replace(book_spec_title, '/', '-') # Avoiding '/' special character in filename
 
-  write.filename = file(paste0(clean_book_title, " - ", edition, ".pdf"), "wb")
+  write.filename = file(paste0(clean_book_title, " - ", edition, ".epub"), "wb")
   writeBin(pdf_file$content, write.filename)
   close(write.filename)
 
+    download_url <- aux$open_url %>%
+    GET() %>%
+    extract2('url') %>%
+    str_replace('book', paste0('content', file_sep, 'epub')) %>%
+    str_replace('%2F', file_sep) %>%
+    paste0('.epub')
+
+  epub_file = GET(download_url)
+
+  clean_book_title <- str_replace(book_spec_title, '/', '-') # Avoiding '/' special character in filename
+
+  write.filename = file(paste0(clean_book_title, " - ", edition, ".epub"), "wb")
+  writeBin(epub_file$content, write.filename)
+  close(write.filename)
 }
